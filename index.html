@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<title>🌸 Đà Lạt Anime Travel Map — RPG Trip Planner</title>
+<meta name="description" content="Bản đồ du lịch Đà Lạt phong cách Anime/Kawaii: đọc Excel, lộ trình thực tế, mô phỏng 3D." />
+
+<!-- ============ CDN: CSS ============ -->
+<link href="https://cdn.jsdelivr.net/npm/maplibre-gl@4.7.1/dist/maplibre-gl.css" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;800&family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="css/style.css" />
+</head>
+
+<body>
+
+<!-- ==================== 0. MÀN HÌNH LOADING ==================== -->
+<div id="boot-screen">
+  <div class="boot-card">
+    <div class="boot-sprite">🌸</div>
+    <h1 data-i18n="boot.title">Travel Map</h1>
+    <p id="boot-msg" data-i18n="boot.msg">Summoning the pastel pink map…</p>
+    <div class="boot-bar"><span id="boot-bar-fill"></span></div>
+  </div>
+</div>
+
+<!-- ==================== 1. TOP BAR ==================== -->
+<header id="topbar">
+  <div class="brand">
+    <span class="brand-emoji">🗺️</span>
+    <div>
+      <h1>Đà Lạt <em>Anime</em> Travel Map</h1>
+      <small id="brand-sub" data-i18n="app.subtitle">RPG Trip Planner • Easy Mode</small>
+    </div>
+  </div>
+
+  <div class="topbar-actions">
+    <label class="btn btn-file" data-i18n-title="btn.excel.title">
+      📗 <span data-i18n="btn.excel">Import Excel</span>
+      <input type="file" id="file-excel" accept=".xlsx,.xls,.csv" hidden />
+    </label>
+    <button class="btn" id="btn-demo" data-i18n-title="btn.demo.title">🎁 <span data-i18n="btn.demo">Sample Data</span></button>
+    <button class="btn btn-play" id="btn-play3d" data-i18n-title="btn.play3d.title">🎬 <span data-i18n="btn.play3d">Play Route 3D</span></button>
+    <button class="btn btn-exit hidden" id="btn-exit3d">⏹ <span data-i18n="btn.exit3d">Exit 3D</span></button>
+    <button class="btn" id="btn-cinema" data-i18n-title="btn.cinema.title">📹 <span data-i18n="btn.cinema">Cinema Mode</span></button>
+      <button class="btn" id="btn-export">📸 <span data-i18n="btn.export">Export Travel Map</span></button>
+    <button class="btn btn-ghost" id="btn-lang" title="Chuyển sang tiếng Việt">🇻🇳 VI</button>
+    <button class="btn btn-ghost" id="btn-help" data-i18n-title="btn.help.title">❓</button>
+  </div>
+</header>
+
+<!-- ==================== 2. LAYOUT CHÍNH ==================== -->
+<main id="layout">
+
+  <!-- ---------- 2.1 SIDEBAR TRÁI: DANH SÁCH ĐỊA ĐIỂM ---------- -->
+  <aside id="sidebar-left" class="panel">
+    <div class="panel-head">
+      <h2 data-i18n="side.places">🎒 Backpack — Places</h2>
+      <span class="pill" id="count-places">0</span>
+    </div>
+
+    <div class="filters">
+      <input type="search" id="search-place" data-i18n-ph="search.ph" placeholder="🔍 Search place names…" />
+      <div class="filter-row">
+        <select id="filter-group"><option value="" data-i18n="filter.group">🏷️ All groups</option></select>
+        <select id="filter-area"><option value="" data-i18n="filter.area">📍 All areas</option></select>
+      </div>
+      <div class="filter-row">
+        <select id="filter-rec">
+          <option value="" data-i18n="filter.rec">⭐ All recommendations</option>
+          <option value="A" data-i18n="filter.rec.a">A – Highly recommended</option>
+          <option value="B" data-i18n="filter.rec.b">B – Depends on taste</option>
+          <option value="C" data-i18n="filter.rec.c">C – Consider carefully</option>
+          <option value="D" data-i18n="filter.rec.d">D – Needs verification</option>
+        </select>
+        <select id="filter-cost">
+          <option value="" data-i18n="filter.cost">💰 All costs</option>
+          <option value="Miễn phí" data-i18n="cost.free">Free</option>
+          <option value="Thấp" data-i18n="cost.low">Low</option>
+          <option value="Trung bình" data-i18n="cost.mid">Medium</option>
+          <option value="Cao" data-i18n="cost.high">High</option>
+        </select>
+      </div>
+    </div>
+
+    <div id="place-list" class="scroll-area">
+      <div class="empty-hint" data-i18n="list.empty">No data yet.</div>
+    </div>
+  </aside>
+
+  <!-- ---------- 2.2 KHU BẢN ĐỒ ---------- -->
+  <section id="map-wrap">
+    <div id="map"></div>
+
+    <!-- Lớp phủ chỉ dùng khi Export ảnh -->
+    <div id="map-overlay">
+      <div id="overlay-title">
+        <span data-i18n="overlay.title">🌸 Đà Lạt Itinerary</span>
+        <small id="overlay-sub" data-i18n="overlay.sub">Anime Travel Map</small>
+      </div>
+      <div id="overlay-legend">
+        <h4 data-i18n="legend.title">🧭 Legend</h4>
+        <ul>
+          <li><i class="lg lg-food"></i> <span data-i18n="legend.food">Food &amp; Drink</span></li>
+          <li><i class="lg lg-travel"></i> <span data-i18n="legend.travel">Sightseeing / Nature</span></li>
+          <li><i class="lg lg-stay"></i> <span data-i18n="legend.stay">Accommodation</span></li>
+          <li><i class="lg lg-other"></i> <span data-i18n="legend.other">Other</span></li>
+          <li><i class="lg lg-route"></i> <span data-i18n="legend.route">Real road route</span></li>
+        </ul>
+        <div id="overlay-stats">— km • —</div>
+      </div>
+    </div>
+
+    <!-- Cụm nút điều khiển bản đồ -->
+    <div id="map-controls">
+      <button class="mini-btn" id="btn-fit" data-i18n-title="map.fit">🎯</button>
+      <button class="mini-btn" id="btn-reset2d" data-i18n-title="map.reset2d">🧭 2D</button>
+      <button class="mini-btn" id="btn-labels" data-i18n-title="map.labels">🏷️</button>
+    </div>
+
+    <!-- Bảng thông số tuyến đường -->
+    <div id="route-hud" class="hidden">
+      <div class="hud-row"><b id="hud-dist">0 km</b><span data-i18n="hud.dist">Real road distance</span></div>
+      <div class="hud-row"><b id="hud-time">0 min</b><span data-i18n="hud.time">Travel time</span></div>
+      <div class="hud-row">
+        <select id="hud-profile">
+          <option value="driving" data-i18n="profile.driving">🏍️ Motorbike / Car</option>
+          <option value="walking" data-i18n="profile.walking">🚶 Walking</option>
+          <option value="cycling" data-i18n="profile.cycling">🚲 Cycling</option>
+        </select>
+      </div>
+      <div id="hud-warnings"></div>
+    </div>
+
+    <!-- Thanh tiến trình khi Play 3D -->
+    <div id="play-hud" class="hidden">
+      <div class="play-title">🎬 <span id="play-leg" data-i18n="play.starting">Departing…</span></div>
+      <div class="play-bar"><span id="play-bar-fill"></span></div>
+      <div class="play-actions">
+        <button class="mini-btn" id="btn-pause" data-i18n-title="play.pause.title">⏸</button>
+        <button class="mini-btn" id="btn-speed" data-i18n-title="play.speed.title">⏩ 1x</button>
+        <button class="mini-btn" id="btn-speedmode" data-i18n-title="play.speedmode.title" data-i18n="play.mode.cinema">🎬 Cinematic</button>
+        <button class="mini-btn" id="btn-hud-off" data-i18n-title="play.hudoff.title" data-i18n="play.hudoff">📹 Hide HUD</button>
+        <button class="mini-btn on" id="btn-hide-others"
+                data-i18n-title="play.hideothers.title" data-i18n="play.hideothers">🙈 Hide others</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ---------- 2.3 SIDEBAR PHẢI: LỊCH TRÌNH ---------- -->
+  <aside id="sidebar-right" class="panel">
+    <div class="panel-head">
+      <h2 data-i18n="side.plan">📅 Travel Journal</h2>
+      <button class="mini-btn" id="btn-clear-plan" data-i18n-title="plan.clear.title">🗑️</button>
+    </div>
+
+    <div class="day-tabs" id="day-tabs"><!-- JS sinh --></div>
+
+    <div class="day-config">
+      <button class="mini-btn" id="btn-day-minus" data-i18n-title="plan.dayminus">➖</button>
+      <span id="day-count-label">3 ngày 2 đêm</span>
+      <button class="mini-btn" id="btn-day-plus" data-i18n-title="plan.dayplus">➕</button>
+    </div>
+
+    <div class="scroll-area" id="plan-area"><!-- JS sinh --></div>
+
+    <div class="plan-footer">
+      <button class="btn btn-route" id="btn-route" data-i18n="btn.route">🛣️ Build real route</button>
+      <button class="btn btn-ghost" id="btn-save-plan" data-i18n="btn.savejson">💾 Save JSON</button>
+    </div>
+  </aside>
+</main>
+
+<!-- ==================== 3. MASCOT / LINH VẬT ==================== -->
+<div id="mascot">
+  <div id="mascot-bubble" class="hidden"><p id="mascot-text"></p></div>
+  <button id="mascot-body" data-i18n-title="mascot.title">
+    <img id="mascot-img" src="assets/icons/mascot.svg" alt="Linh vật Chibi" onerror="this.style.display='none';document.getElementById('mascot-fallback').style.display='block'" />
+    <span id="mascot-fallback" style="display:none">🐰</span>
+  </button>
+</div>
+
+<!-- ==================== 4. MODAL HƯỚNG DẪN ==================== -->
+<div id="modal-help" class="modal hidden">
+  <div class="modal-card">
+    <button class="modal-close" data-close>✕</button>
+    <h2 data-i18n="help.title">📖 Adventurer’s Handbook</h2>
+    <ol>
+      <li data-i18n="help.1"></li>
+      <li data-i18n="help.2"></li>
+      <li data-i18n="help.3"></li>
+      <li data-i18n="help.4"></li>
+      <li data-i18n="help.5"></li>
+    </ol>
+    <p class="hint" data-i18n="help.hint"></p>
+  </div>
+</div>
+
+<!-- ==================== 5. TOAST ==================== -->
+<div id="toast-wrap"></div>
+
+<!-- ==================== 6. CDN: JAVASCRIPT ==================== -->
+<script src="https://cdn.jsdelivr.net/npm/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@turf/turf@6.5.0/turf.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.2/Sortable.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+
+<!-- ==================== 7. SOURCE CỦA DỰ ÁN ==================== -->
+<script src="js/i18n.js"></script>
+<script src="js/config.js"></script>
+<script src="js/mapstyle.js"></script>
+<script src="js/data.js"></script>
+<script src="js/planner.js"></script>
+<script src="js/routing.js"></script>
+<script src="js/play3d.js"></script>
+<script src="js/mascot.js"></script>
+<script src="js/exporter.js"></script>
+<script src="js/app.js"></script>
+<button id="hud-restore" data-i18n-title="hud.restore.title" data-i18n="hud.restore">👁️ Show HUD</button>
+<button id="cinema-exit" data-i18n-title="cinema.exit.title" data-i18n="cinema.exit">✕ Exit recording mode</button>
+</body>
+</html>

@@ -1,0 +1,723 @@
+/* =====================================================================
+   Đà Lạt Anime Travel Map — style.css
+   Bảng màu Kawaii/Anime: hồng pastel + tím nhạt + trắng kem
+   ===================================================================== */
+
+:root{
+  /* ---- Palette ---- */
+  --pink-50:#fff5fa;
+  --pink-100:#ffe9f3;
+  --pink-200:#ffd3e6;
+  --pink-300:#ffb3d4;
+  --pink-400:#ff8cbd;
+  --pink-500:#f0609f;
+  --pink-600:#d13f80;
+  --plum-700:#8c3f68;
+  --plum-900:#5b2340;
+
+  --lilac-100:#f0e9ff;
+  --lilac-300:#c9b6ff;
+  --lilac-500:#9a7cf0;
+
+  --mint-200:#c8f4e2;
+  --mint-500:#2fb98a;
+  --amber-200:#ffe2b8;
+  --amber-500:#e58a1f;
+  --danger-200:#ffd2cd;
+  --danger-500:#e0563f;
+
+  --ink:#4a2038;
+  --ink-soft:#8a6178;
+
+  /* ---- Shape ---- */
+  --r-lg:22px;
+  --r-md:16px;
+  --r-sm:11px;
+  --shadow-soft:0 6px 18px rgba(180,80,130,.18);
+  --shadow-pop:0 14px 40px rgba(150,50,110,.28);
+  --border:2.5px solid var(--pink-300);
+
+  --topbar-h:66px;
+  --side-w:310px;
+}
+
+/* ---------------------------------------------------------------- Base */
+*{box-sizing:border-box;}
+html,body{height:100%;}
+body{
+  margin:0;
+  font-family:'Quicksand','Segoe UI',system-ui,sans-serif;
+  color:var(--ink);
+  background:
+    radial-gradient(1200px 600px at 12% -8%, #ffe1ef 0%, transparent 60%),
+    radial-gradient(900px 500px at 100% 0%, #efe6ff 0%, transparent 55%),
+    var(--pink-50);
+  overflow:hidden;
+}
+h1,h2,h3,h4{font-family:'Baloo 2','Quicksand',sans-serif;margin:0;font-weight:800;}
+button,select,input{font-family:inherit;color:inherit;}
+.hidden{display:none !important;}
+
+/* Scrollbar kawaii */
+.scroll-area{overflow-y:auto;overflow-x:hidden;}
+.scroll-area::-webkit-scrollbar{width:10px;}
+.scroll-area::-webkit-scrollbar-track{background:var(--pink-100);border-radius:20px;}
+.scroll-area::-webkit-scrollbar-thumb{
+  background:linear-gradient(var(--pink-300),var(--lilac-300));
+  border-radius:20px;border:2px solid var(--pink-100);
+}
+
+/* ------------------------------------------------------- Boot / Loading */
+#boot-screen{
+  position:fixed;inset:0;z-index:9999;
+  display:grid;place-items:center;
+  background:linear-gradient(140deg,#ffd9ea,#f3e6ff 55%,#ffe9f3);
+  transition:opacity .5s ease, visibility .5s;
+}
+#boot-screen.done{opacity:0;visibility:hidden;}
+.boot-card{
+  text-align:center;padding:34px 46px;border-radius:28px;
+  background:rgba(255,255,255,.72);border:3px solid #fff;
+  box-shadow:var(--shadow-pop);backdrop-filter:blur(8px);
+}
+.boot-sprite{font-size:58px;animation:bob 1.6s ease-in-out infinite;}
+.boot-card h1{font-size:26px;color:var(--pink-600);margin:6px 0 4px;}
+.boot-card p{margin:0 0 14px;color:var(--ink-soft);font-size:13.5px;font-weight:600;}
+.boot-bar{width:260px;height:10px;border-radius:20px;background:var(--pink-200);overflow:hidden;}
+.boot-bar span{
+  display:block;height:100%;width:8%;border-radius:20px;
+  background:linear-gradient(90deg,var(--pink-400),var(--lilac-500));
+  transition:width .35s ease;
+}
+@keyframes bob{0%,100%{transform:translateY(0) rotate(-4deg);}50%{transform:translateY(-12px) rotate(4deg);}}
+
+/* -------------------------------------------------------------- Top bar */
+#topbar{
+  height:var(--topbar-h);
+  display:flex;align-items:center;justify-content:space-between;gap:14px;
+  padding:0 16px;
+  background:linear-gradient(100deg,#ffd9ea 0%,#f6e3ff 50%,#ffe4f0 100%);
+  border-bottom:3px solid #fff;
+  box-shadow:0 4px 20px rgba(190,90,150,.22);
+  position:relative;z-index:50;
+}
+.brand{display:flex;align-items:center;gap:11px;min-width:0;}
+.brand-emoji{font-size:30px;filter:drop-shadow(0 3px 4px rgba(190,80,140,.4));}
+.brand h1{font-size:19px;line-height:1.1;color:var(--plum-700);white-space:nowrap;}
+.brand h1 em{color:var(--pink-500);font-style:italic;}
+.brand small{font-size:11px;color:var(--ink-soft);font-weight:700;letter-spacing:.3px;}
+
+.topbar-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap;justify-content:flex-end;}
+
+.btn{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:9px 14px;border-radius:var(--r-md);cursor:pointer;
+  font-size:13px;font-weight:700;
+  background:#fff;color:var(--plum-700);
+  border:2.5px solid var(--pink-300);
+  box-shadow:0 4px 0 var(--pink-200);
+  transition:transform .12s, box-shadow .12s, background .2s;
+  white-space:nowrap;
+}
+.btn:hover{transform:translateY(-2px);box-shadow:0 6px 0 var(--pink-300);background:var(--pink-50);}
+.btn:active{transform:translateY(2px);box-shadow:0 1px 0 var(--pink-300);}
+.btn-file{position:relative;}
+.btn-play{background:linear-gradient(120deg,var(--pink-400),var(--lilac-500));color:#fff;border-color:#fff;box-shadow:0 4px 0 var(--pink-600);}
+.btn-play:hover{background:linear-gradient(120deg,var(--pink-500),var(--lilac-500));color:#fff;}
+.btn-exit{background:linear-gradient(120deg,#ff8f7a,#e0563f);color:#fff;border-color:#fff;box-shadow:0 4px 0 #b93f2c;}
+.btn-route{background:linear-gradient(120deg,var(--mint-200),#a5e9d1);border-color:#fff;box-shadow:0 4px 0 #7fcfb2;}
+.btn-ghost{background:transparent;border-style:dashed;box-shadow:none;}
+.btn-ghost:hover{box-shadow:none;background:#fff8fc;}
+.btn:disabled{opacity:.5;cursor:not-allowed;transform:none;}
+
+/* -------------------------------------------------------------- Layout */
+#layout{
+  height:calc(100vh - var(--topbar-h));
+  display:grid;
+  grid-template-columns:var(--side-w) 1fr var(--side-w);
+  gap:12px;padding:12px;
+}
+.panel{
+  display:flex;flex-direction:column;min-height:0;
+  background:rgba(255,255,255,.86);
+  border:var(--border);border-radius:var(--r-lg);
+  box-shadow:var(--shadow-soft);backdrop-filter:blur(6px);
+  overflow:hidden;
+}
+.panel-head{
+  display:flex;align-items:center;justify-content:space-between;gap:8px;
+  padding:12px 14px;
+  background:linear-gradient(100deg,var(--pink-200),var(--lilac-100));
+  border-bottom:2.5px dashed var(--pink-300);
+}
+.panel-head h2{font-size:15.5px;color:var(--plum-700);}
+.pill{
+  background:var(--pink-500);color:#fff;font-size:11.5px;font-weight:800;
+  padding:3px 10px;border-radius:20px;box-shadow:0 2px 6px rgba(200,60,130,.35);
+}
+
+/* -------------------------------------------------------------- Filters */
+.filters{padding:10px 12px;display:flex;flex-direction:column;gap:8px;border-bottom:2px solid var(--pink-100);}
+.filter-row{display:grid;grid-template-columns:1fr 1fr;gap:7px;}
+.filters input,.filters select,#hud-profile{
+  width:100%;padding:8px 10px;font-size:12.4px;font-weight:600;
+  border:2px solid var(--pink-200);border-radius:var(--r-sm);
+  background:#fff;outline:none;transition:border-color .2s, box-shadow .2s;
+}
+.filters input:focus,.filters select:focus{border-color:var(--pink-400);box-shadow:0 0 0 3px var(--pink-100);}
+
+/* ---------------------------------------------------------- Place cards */
+#place-list{flex:1;padding:10px;display:flex;flex-direction:column;gap:8px;}
+.empty-hint{
+  text-align:center;padding:26px 14px;font-size:12.6px;color:var(--ink-soft);
+  border:2.5px dashed var(--pink-200);border-radius:var(--r-md);background:#fffafd;line-height:1.7;
+}
+
+.place-card{
+  display:flex;align-items:center;gap:10px;
+  padding:9px 10px;border-radius:var(--r-md);cursor:grab;
+  background:#fff;border:2.5px solid var(--pink-100);
+  box-shadow:0 3px 0 var(--pink-100);
+  transition:transform .12s, border-color .18s, box-shadow .18s;
+}
+.place-card:hover{transform:translateX(4px);border-color:var(--pink-300);box-shadow:0 3px 0 var(--pink-300);}
+.place-card:active{cursor:grabbing;}
+.place-card.is-active{border-color:var(--lilac-500);box-shadow:0 0 0 3px var(--lilac-100);}
+.pc-icon{
+  width:40px;height:40px;flex:0 0 40px;border-radius:12px;
+  display:grid;place-items:center;overflow:hidden;
+  background:linear-gradient(140deg,var(--pink-100),var(--lilac-100));
+  border:2px solid #fff;box-shadow:0 2px 5px rgba(190,90,150,.2);
+}
+.pc-icon img{width:100%;height:100%;object-fit:contain;}
+.pc-body{min-width:0;flex:1;}
+.pc-name{
+  font-size:12.9px;font-weight:800;color:var(--plum-700);line-height:1.25;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
+}
+.pc-meta{display:flex;align-items:center;gap:6px;margin-top:3px;flex-wrap:wrap;}
+.tag{
+  font-size:10px;font-weight:800;padding:2px 7px;border-radius:20px;
+  background:var(--lilac-100);color:var(--lilac-500);
+}
+.tag.star{background:#fff3cf;color:#b8791b;}
+.tag.grade-A{background:#d6f8ea;color:var(--mint-500);}
+.tag.grade-B{background:var(--lilac-100);color:var(--lilac-500);}
+.tag.grade-C{background:var(--amber-200);color:var(--amber-500);}
+.tag.grade-D{background:var(--danger-200);color:var(--danger-500);}
+.pc-add{
+  width:28px;height:28px;flex:0 0 28px;border-radius:50%;cursor:pointer;
+  border:2px solid var(--pink-300);background:#fff;color:var(--pink-500);
+  font-weight:900;font-size:14px;line-height:1;
+}
+.pc-add:hover{background:var(--pink-400);color:#fff;}
+
+/* Ghost khi kéo */
+.sortable-ghost{opacity:.45;border-style:dashed !important;background:var(--pink-100) !important;}
+.sortable-chosen{transform:scale(1.03) rotate(-1deg);}
+
+/* ------------------------------------------------------------ Map area */
+#map-wrap{
+  position:relative;border-radius:var(--r-lg);overflow:hidden;
+  border:var(--border);box-shadow:var(--shadow-soft);background:var(--pink-100);
+}
+#map{position:absolute;inset:0;}
+.maplibregl-ctrl-attrib{font-size:9.5px;background:rgba(255,255,255,.75) !important;border-radius:8px 0 0 0;}
+
+/* Marker Chibi */
+/* ⚠️ TUYỆT ĐỐI KHÔNG đặt transition/transform/will-change lên .chibi-marker.
+   MapLibre ghi trực tiếp `transform: translate(...)` vào style inline của
+   phần tử này ở MỖI FRAME để neo marker vào toạ độ địa lý. Nếu CSS thêm
+   transition, trình duyệt sẽ nội suy giữa 2 frame => marker trôi lệch
+   (đo được 29.8px khi pan, marker "bay" khỏi vị trí thật).
+   Mọi hiệu ứng hover/scale phải đặt ở LỚP CON .chibi-pin. */
+.chibi-marker{
+  width:46px;height:46px;cursor:pointer;
+  /* ⚠️ KHÔNG đặt position:relative ở đây! MapLibre cần position:absolute
+     để neo marker theo transform. Đặt relative khiến 93 marker xếp chồng
+     dọc như block thường (lệch đúng index × 46px, marker cuối trôi 4232px
+     ra khỏi bản đồ). Lớp con .chibi-pin lo phần positioning nội bộ. */
+  position:absolute;
+  transition:none !important;
+}
+.chibi-marker:hover{z-index:5;}
+.chibi-marker:hover .chibi-pin{transform:scale(1.22) translateY(-4px);}
+.chibi-pin{
+  width:100%;height:100%;border-radius:50%;
+  transition:transform .18s cubic-bezier(.34,1.56,.64,1), filter .18s, border-color .2s;
+  will-change:transform;
+  background:radial-gradient(circle at 40% 30%,#fff,#ffe6f2);
+  border:3px solid var(--pink-400);
+  box-shadow:0 6px 12px rgba(160,50,110,.35);
+  display:grid;place-items:center;overflow:hidden;
+}
+.chibi-pin img{width:82%;height:82%;object-fit:contain;pointer-events:none;}
+.chibi-marker::after{
+  content:'';position:absolute;left:50%;bottom:-7px;transform:translateX(-50%);
+  width:0;height:0;border:7px solid transparent;border-top-color:var(--pink-400);
+}
+/* Màu pin theo buổi khi lọc lịch trình */
+.chibi-marker[data-slot="Sáng"]  .chibi-pin{border-color:#ffb020;box-shadow:0 6px 14px rgba(255,176,32,.5);}
+.chibi-marker[data-slot="Sáng"]::after{border-top-color:#ffb020;}
+.chibi-marker[data-slot="Chiều"] .chibi-pin{border-color:#2fb98a;box-shadow:0 6px 14px rgba(47,185,138,.5);}
+.chibi-marker[data-slot="Chiều"]::after{border-top-color:#2fb98a;}
+.chibi-marker[data-slot="Tối"]   .chibi-pin{border-color:#7c5cf0;box-shadow:0 6px 14px rgba(124,92,240,.5);}
+.chibi-marker[data-slot="Tối"]::after{border-top-color:#7c5cf0;}
+.chibi-marker.dimmed{opacity:.28;filter:grayscale(.75);}
+/* opacity/filter không đụng tới transform nên an toàn với MapLibre */
+.chibi-marker.pulse .chibi-pin{animation:pulse 1.1s ease-out infinite;}
+@keyframes pulse{
+  0%{box-shadow:0 0 0 0 rgba(240,96,159,.65);}
+  100%{box-shadow:0 0 0 20px rgba(240,96,159,0);}
+}
+/* Số thứ tự trong lịch trình */
+.chibi-order{
+  position:absolute;top:-8px;left:-8px;min-width:22px;height:22px;padding:0 5px;
+  border-radius:12px;background:var(--plum-700);color:#fff;
+  font-size:11.5px;font-weight:900;display:grid;place-items:center;
+  border:2px solid #fff;box-shadow:0 2px 5px rgba(0,0,0,.28);
+}
+/* Nhãn tên hiển thị khi export */
+.chibi-label{
+  position:absolute;top:50px;left:50%;transform:translateX(-50%);
+  white-space:nowrap;font-size:10.5px;font-weight:800;color:var(--plum-900);
+  background:rgba(255,255,255,.92);padding:2px 8px;border-radius:10px;
+  border:1.5px solid var(--pink-300);box-shadow:0 2px 5px rgba(160,60,110,.2);
+  pointer-events:none;max-width:150px;overflow:hidden;text-overflow:ellipsis;
+}
+body.labels-off .chibi-label{display:none;}
+
+/* --------------------------------------------------------- RPG Popup */
+.maplibregl-popup{max-width:280px !important;}
+.maplibregl-popup-content{
+  padding:0 !important;background:transparent !important;
+  box-shadow:none !important;border-radius:0 !important;
+}
+.maplibregl-popup-tip{border-top-color:rgba(255,250,253,.9) !important;border-bottom-color:rgba(255,250,253,.9) !important;}
+.maplibregl-popup-close-button{
+  right:7px !important;top:6px !important;font-size:16px !important;
+  color:#fff !important;background:rgba(0,0,0,.25) !important;
+  width:21px;height:21px;border-radius:50% !important;line-height:1 !important;z-index:3;
+}
+
+.rpg-card{
+  width:266px;border-radius:16px;overflow:hidden auto;
+  max-height:min(390px, 46vh);
+  /* Nền mờ + blur: vẫn đọc rõ chữ nhưng thấy được bản đồ phía sau */
+  background:rgba(255,250,253,.90);
+  -webkit-backdrop-filter:blur(9px) saturate(1.15);
+  backdrop-filter:blur(9px) saturate(1.15);
+  border:2px solid rgba(244,114,182,.75);
+  box-shadow:0 10px 26px rgba(190,60,140,.22);
+  font-family:'Quicksand',sans-serif;
+  animation:cardIn .28s cubic-bezier(.34,1.56,.64,1);
+}
+/* Thu gọn: phần phụ chỉ hiện khi bấm "Xem thêm" */
+.rpg-card:not(.expanded) .rpg-more{display:none;}
+.rpg-toggle{
+  display:block;width:calc(100% - 20px);margin:0 10px 10px;padding:6px;
+  border:1.5px dashed var(--pink-300);background:rgba(255,255,255,.7);
+  color:var(--pink-600);font:800 11px 'Quicksand',sans-serif;
+  border-radius:10px;cursor:pointer;
+}
+.rpg-toggle:hover{background:var(--pink-400);color:#fff;border-style:solid;}
+@keyframes cardIn{from{opacity:0;transform:translateY(14px) scale(.94);}to{opacity:1;transform:none;}}
+
+.rpg-card::-webkit-scrollbar{width:8px;}
+.rpg-card::-webkit-scrollbar-thumb{background:var(--pink-300);border-radius:20px;}
+.rpg-head{
+  position:sticky;top:0;z-index:2;padding:9px 34px 8px 12px;
+  background:linear-gradient(100deg,rgba(244,114,182,.96),rgba(167,139,250,.96));
+  color:#fff;
+}
+.rpg-head::after{
+  content:'';position:absolute;left:0;right:0;bottom:0;height:5px;
+  background:repeating-linear-gradient(90deg,#fff 0 9px,transparent 9px 18px);opacity:.55;
+}
+.rpg-title{font-family:'Baloo 2',sans-serif;font-size:14.5px;font-weight:800;line-height:1.2;text-shadow:0 2px 4px rgba(120,30,90,.4);}
+.rpg-sub{font-size:10px;font-weight:700;opacity:.95;margin-top:3px;}
+
+.rpg-rating{
+  display:flex;align-items:center;gap:7px;padding:6px 12px;
+  background:linear-gradient(rgba(255,246,218,.9),rgba(255,238,194,.9));border-bottom:2px dashed var(--pink-200);
+}
+.rpg-score{font-family:'Baloo 2';font-size:18px;font-weight:800;color:#c8891a;line-height:1;}
+.rpg-stars{font-size:12.5px;letter-spacing:1px;}
+.rpg-reviews{font-size:11px;color:#9c7b3f;font-weight:700;}
+.rpg-gmap{
+  margin-left:auto;font-size:11px;font-weight:800;text-decoration:none;
+  background:#fff;color:var(--pink-600);padding:5px 10px;border-radius:20px;
+  border:2px solid var(--pink-300);white-space:nowrap;
+}
+.rpg-gmap:hover{background:var(--pink-400);color:#fff;}
+
+.rpg-stats{
+  display:grid;grid-template-columns:1fr 1fr;gap:5px;padding:8px 10px;
+  background:transparent;
+}
+.stat{
+  display:flex;flex-direction:column;gap:1px;padding:5px 8px;border-radius:9px;
+  background:linear-gradient(140deg,rgba(255,241,248,.85),rgba(237,233,254,.85));
+  border:1.5px solid var(--pink-100);
+}
+.stat b{font-size:9.5px;font-weight:800;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.4px;}
+.stat span{font-size:11px;font-weight:700;color:var(--plum-700);line-height:1.3;}
+.stat.wide{grid-column:1/-1;}
+
+.rpg-cards{padding:0 10px 9px;display:flex;flex-direction:column;gap:6px;}
+.pro-card,.con-card{
+  padding:7px 9px;border-radius:11px;font-size:11px;line-height:1.45;font-weight:600;
+  border-left:4px solid;
+}
+.pro-card{
+  background:linear-gradient(100deg,#e6fbf0,#f6ffe9);
+  border-color:var(--mint-500);color:#186c50;
+}
+.con-card{
+  background:linear-gradient(100deg,#fff0e6,#ffeaea);
+  border-color:var(--amber-500);color:#94411f;
+}
+.pro-card h5,.con-card h5{
+  margin:0 0 3px;font-size:11px;font-weight:900;letter-spacing:.3px;
+  font-family:'Baloo 2',sans-serif;
+}
+
+.rpg-quest{
+  margin:0 12px 12px;padding:10px 12px;border-radius:13px;
+  background:linear-gradient(100deg,var(--lilac-100),var(--pink-100));
+  border:2px dashed var(--lilac-300);
+}
+.rpg-quest h5{margin:0 0 3px;font-size:11px;font-weight:900;color:var(--lilac-500);font-family:'Baloo 2';}
+.rpg-quest p{margin:0;font-size:12px;font-weight:700;color:var(--plum-700);}
+
+.rpg-foot{display:flex;gap:7px;padding:0 12px 12px;}
+.rpg-foot button{
+  flex:1;padding:8px;border-radius:12px;cursor:pointer;font-size:11.6px;font-weight:800;
+  border:2px solid var(--pink-300);background:#fff;color:var(--pink-600);
+}
+.rpg-foot button:hover{background:var(--pink-400);color:#fff;}
+.rpg-src{display:block;padding:0 12px 11px;font-size:10px;color:var(--ink-soft);word-break:break-all;}
+.rpg-src a{color:var(--lilac-500);}
+
+/* -------------------------------------------------- Map control buttons */
+#map-controls{position:absolute;top:12px;right:12px;display:flex;flex-direction:column;gap:7px;z-index:6;}
+.mini-btn{
+  min-width:38px;height:38px;padding:0 9px;border-radius:12px;cursor:pointer;
+  background:rgba(255,255,255,.93);border:2.5px solid var(--pink-300);
+  font-size:14px;font-weight:800;color:var(--plum-700);
+  box-shadow:0 3px 10px rgba(170,70,120,.25);transition:transform .12s,background .18s;
+}
+.mini-btn:hover{transform:scale(1.08);background:#fff;}
+.mini-btn.on{background:var(--pink-400);color:#fff;border-color:#fff;}
+
+/* --------------------------------------------------------- Route HUD */
+#route-hud{
+  position:absolute;left:12px;bottom:12px;z-index:6;width:224px;
+  padding:11px 13px;border-radius:var(--r-md);
+  background:rgba(255,255,255,.93);border:2.5px solid var(--lilac-300);
+  box-shadow:var(--shadow-soft);backdrop-filter:blur(6px);
+}
+.hud-row{display:flex;align-items:baseline;gap:7px;margin-bottom:5px;}
+.hud-row b{font-family:'Baloo 2';font-size:17px;color:var(--pink-600);}
+.hud-row span{font-size:10.5px;font-weight:700;color:var(--ink-soft);}
+#hud-warnings{margin-top:6px;display:flex;flex-direction:column;gap:5px;max-height:150px;overflow-y:auto;}
+.warn{
+  font-size:10.6px;font-weight:700;line-height:1.45;padding:6px 8px;border-radius:9px;
+  background:var(--amber-200);color:#8a4c10;border-left:4px solid var(--amber-500);
+}
+.warn.hard{background:var(--danger-200);color:#8f2f1c;border-color:var(--danger-500);}
+
+/* ------------------------------------------------------------ Play HUD */
+#play-hud{
+  position:absolute;left:50%;transform:translateX(-50%);bottom:16px;z-index:8;
+  width:min(460px,72%);padding:11px 15px;border-radius:20px;
+  background:rgba(46,20,40,.82);color:#fff;border:2.5px solid var(--pink-400);
+  box-shadow:0 10px 30px rgba(0,0,0,.4);backdrop-filter:blur(9px);
+}
+.play-title{font-size:13px;font-weight:800;margin-bottom:7px;font-family:'Baloo 2';}
+.play-bar{height:8px;border-radius:20px;background:rgba(255,255,255,.22);overflow:hidden;}
+.play-bar span{display:block;height:100%;width:0;border-radius:20px;background:linear-gradient(90deg,var(--pink-300),#ffe08a);transition:width .2s linear;}
+.play-actions{display:flex;gap:7px;margin-top:9px;}
+.play-actions .mini-btn{height:30px;min-width:30px;font-size:12px;background:rgba(255,255,255,.16);color:#fff;border-color:rgba(255,255,255,.4);}
+
+/* Popup nhỏ khi linh vật dừng ở điểm */
+.arrive-popup .maplibregl-popup-content{background:transparent !important;}
+.arrive-card{
+  padding:9px 15px;border-radius:16px;font-family:'Baloo 2';font-size:14px;font-weight:800;
+  background:linear-gradient(100deg,var(--pink-400),var(--lilac-500));color:#fff;
+  border:3px solid #fff;box-shadow:var(--shadow-pop);white-space:nowrap;
+  animation:cardIn .3s cubic-bezier(.34,1.56,.64,1);
+}
+.arrive-card small{display:block;font-size:10.5px;font-weight:700;opacity:.92;}
+
+/* -------------------------------------------------------- Plan sidebar */
+.day-tabs{display:flex;gap:5px;padding:9px 10px;border-bottom:2px solid var(--pink-100);}
+.day-tab{
+  flex:1;padding:7px 4px;border-radius:11px;cursor:pointer;font-size:11.6px;font-weight:800;
+  background:#fff;border:2px solid var(--pink-200);color:var(--ink-soft);
+}
+.day-tab.active{background:linear-gradient(120deg,var(--pink-400),var(--lilac-500));color:#fff;border-color:#fff;box-shadow:0 3px 8px rgba(200,80,150,.35);}
+
+#plan-area{flex:1;padding:10px;}
+.day-block{margin-bottom:14px;}
+.day-title{font-size:14px;color:var(--plum-700);margin-bottom:7px;}
+.slot{margin-bottom:9px;}
+.slot-head{
+  display:flex;justify-content:space-between;align-items:center;
+  font-size:11.6px;font-weight:800;color:var(--plum-700);margin-bottom:4px;padding:0 3px;
+}
+.slot-meta{font-size:10px;color:var(--ink-soft);font-weight:700;}
+.drop-zone{
+  min-height:52px;padding:6px;border-radius:var(--r-md);
+  border:2.5px dashed var(--pink-200);background:#fffafd;
+  display:flex;flex-direction:column;gap:6px;transition:background .2s,border-color .2s;
+}
+.drop-zone:empty::before{
+  content:var(--drop-hint,'Drag places here ✨');
+  display:grid;place-items:center;min-height:40px;
+  font-size:10.8px;color:#c79ab4;font-weight:700;
+}
+.drop-zone.drag-over{background:var(--pink-100);border-color:var(--pink-400);}
+/* Viền màu theo buổi */
+.slot[data-slot="Sáng"]  .drop-zone{border-color:#ffcf87;}
+.slot[data-slot="Chiều"] .drop-zone{border-color:#9fe3cb;}
+.slot[data-slot="Tối"]   .drop-zone{border-color:#c3b1f5;}
+
+.plan-item{
+  display:flex;align-items:center;gap:8px;padding:7px 8px;border-radius:12px;cursor:grab;
+  background:#fff;border:2px solid var(--pink-200);box-shadow:0 2px 0 var(--pink-100);
+}
+.plan-item:hover{border-color:var(--pink-400);}
+.pi-order{
+  width:21px;height:21px;flex:0 0 21px;border-radius:50%;display:grid;place-items:center;
+  background:var(--plum-700);color:#fff;font-size:10.5px;font-weight:900;
+}
+.pi-icon{width:24px;height:24px;flex:0 0 24px;}
+.pi-icon img{width:100%;height:100%;object-fit:contain;}
+.pi-name{
+  flex:1;min-width:0;font-size:11.6px;font-weight:800;color:var(--plum-700);
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+}
+.pi-del{
+  border:none;background:transparent;cursor:pointer;font-size:13px;color:#d98aae;padding:0 2px;
+}
+.pi-del:hover{color:var(--danger-500);}
+.leg-info{
+  display:flex;align-items:center;gap:5px;padding:2px 8px;margin:-2px 0 -2px 26px;
+  font-size:10px;font-weight:800;color:var(--lilac-500);
+}
+.leg-info.warn-leg{color:var(--danger-500);}
+
+.plan-footer{padding:10px;display:flex;flex-direction:column;gap:7px;border-top:2px solid var(--pink-100);background:#fff9fc;}
+.plan-footer .btn{justify-content:center;}
+
+/* --------------------------------------------------- Export overlay */
+#map-overlay{position:absolute;inset:0;pointer-events:none;z-index:4;opacity:0;transition:opacity .25s;}
+#map-overlay.show{opacity:1;}
+#overlay-title{
+  position:absolute;top:14px;left:14px;padding:9px 16px;border-radius:16px;
+  background:linear-gradient(100deg,rgba(255,140,189,.95),rgba(154,124,240,.95));color:#fff;
+  border:3px solid #fff;box-shadow:var(--shadow-pop);
+  font-family:'Baloo 2';font-size:17px;font-weight:800;
+}
+#overlay-title small{display:block;font-size:10.5px;font-weight:700;opacity:.92;}
+#overlay-legend{
+  position:absolute;right:14px;bottom:14px;padding:11px 14px;border-radius:16px;
+  background:rgba(255,255,255,.95);border:2.5px solid var(--pink-300);box-shadow:var(--shadow-soft);
+}
+#overlay-legend h4{font-size:12px;color:var(--plum-700);margin-bottom:6px;}
+#overlay-legend ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:4px;}
+#overlay-legend li{display:flex;align-items:center;gap:7px;font-size:11px;font-weight:700;color:var(--ink);}
+.lg{width:14px;height:14px;border-radius:50%;border:2px solid #fff;box-shadow:0 1px 3px rgba(0,0,0,.25);}
+.lg-food{background:#ff7fb0;}
+.lg-travel{background:#57c9a4;}
+.lg-stay{background:#9a7cf0;}
+.lg-other{background:#ffc46b;}
+.lg-route{background:linear-gradient(90deg,#ff5fa2,#7c5cf0);border-radius:3px;height:6px;width:22px;}
+#overlay-stats{
+  margin-top:7px;padding-top:6px;border-top:2px dashed var(--pink-200);
+  font-family:'Baloo 2';font-size:13px;font-weight:800;color:var(--pink-600);
+}
+
+/* -------------------------------------------------------------- Mascot */
+/* Đặt linh vật trong VÙNG BẢN ĐỒ (lùi qua trái đúng bề rộng sidebar phải)
+   để bong bóng thoại không che nút "Tính tuyến đường" / "Lưu JSON". */
+#mascot{
+  position:fixed;right:calc(var(--side-w) + 26px);bottom:16px;z-index:80;
+  display:flex;align-items:flex-end;gap:9px;
+  pointer-events:none;               /* không chặn click xuyên qua */
+}
+#mascot-body{pointer-events:auto;}   /* chỉ thân linh vật là bấm được */
+/* Chế độ quay màn hình không còn sidebar -> trả về sát mép phải */
+body.cinema #mascot{right:18px;}
+#mascot-bubble{
+  max-width:230px;pointer-events:none;padding:11px 14px;border-radius:18px 18px 4px 18px;
+  background:#fff;border:2.5px solid var(--pink-300);box-shadow:var(--shadow-pop);
+  animation:cardIn .26s cubic-bezier(.34,1.56,.64,1);
+}
+#mascot-bubble p{margin:0;font-size:12.2px;font-weight:700;color:var(--plum-700);line-height:1.55;}
+#mascot-body{
+  width:82px;height:82px;border-radius:50%;cursor:pointer;padding:0;
+  background:radial-gradient(circle at 40% 30%,#fff,var(--pink-100));
+  border:3px solid var(--pink-300);box-shadow:var(--shadow-pop);
+  display:grid;place-items:center;font-size:38px;overflow:hidden;
+  animation:float 3.2s ease-in-out infinite;
+}
+#mascot-body:hover{transform:scale(1.07) rotate(-4deg);}
+#mascot-body img{width:92%;height:92%;object-fit:contain;}
+@keyframes float{0%,100%{transform:translateY(0);}50%{transform:translateY(-9px);}}
+
+/* --------------------------------------------------------------- Modal */
+.modal{position:fixed;inset:0;z-index:200;display:grid;place-items:center;background:rgba(90,30,65,.42);backdrop-filter:blur(4px);}
+.modal-card{
+  position:relative;width:min(520px,90vw);max-height:82vh;overflow-y:auto;
+  padding:26px 28px;border-radius:24px;background:#fffafd;
+  border:3px solid var(--pink-400);box-shadow:var(--shadow-pop);
+}
+.modal-card h2{font-size:20px;color:var(--pink-600);margin-bottom:12px;}
+.modal-card ol{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:9px;}
+.modal-card li{font-size:13px;font-weight:600;line-height:1.6;}
+.modal-card .hint{margin-top:14px;padding:10px 12px;border-radius:12px;background:var(--lilac-100);font-size:12px;font-weight:700;}
+.modal-close{
+  position:absolute;top:12px;right:14px;width:30px;height:30px;border-radius:50%;cursor:pointer;
+  border:2px solid var(--pink-300);background:#fff;color:var(--pink-600);font-weight:900;
+}
+
+/* --------------------------------------------------------------- Toast */
+#toast-wrap{position:fixed;top:78px;left:50%;transform:translateX(-50%);z-index:300;display:flex;flex-direction:column;gap:8px;align-items:center;pointer-events:none;}
+.toast{
+  padding:10px 18px;border-radius:20px;font-size:12.6px;font-weight:800;
+  background:rgba(255,255,255,.96);color:var(--plum-700);
+  border:2.5px solid var(--pink-300);box-shadow:var(--shadow-pop);
+  animation:toastIn .3s cubic-bezier(.34,1.56,.64,1);
+}
+.toast.err{border-color:var(--danger-500);color:var(--danger-500);}
+.toast.ok{border-color:var(--mint-500);color:var(--mint-500);}
+@keyframes toastIn{from{opacity:0;transform:translateY(-14px);}to{opacity:1;transform:none;}}
+
+/* ---------------------------------------------------------- Responsive */
+@media (max-width:1180px){
+  :root{--side-w:270px;}
+  .brand h1{font-size:16px;}
+}
+@media (max-width:980px){
+  body{overflow:auto;}
+  #topbar{height:auto;flex-direction:column;align-items:stretch;padding:10px 12px;gap:9px;}
+  .topbar-actions{justify-content:center;}
+  #layout{height:auto;grid-template-columns:1fr;}
+  #map-wrap{height:62vh;}
+  .panel{max-height:52vh;}
+  #mascot{right:10px;bottom:10px;}
+  #mascot-bubble{max-width:190px;}
+  #mascot-body{width:62px;height:62px;}
+  #mascot-bubble{max-width:190px;}
+}
+
+/* ------------------------------------------- Trạng thái khi export ảnh */
+body.exporting #map-wrap,
+body.exporting #map,
+body.exporting .maplibregl-canvas-container,
+body.exporting .mapboxgl-canvas-container{ background:transparent !important; }
+body.exporting .maplibregl-ctrl-top-left,
+body.exporting .mapboxgl-ctrl-top-left,
+body.exporting .maplibregl-ctrl-bottom-right,
+body.exporting .mapboxgl-ctrl-bottom-right{ display:none !important; }
+body.exporting #map-wrap{ box-shadow:none !important; border-color:transparent !important; }
+
+/* Linh vật khi Play 3D cũng là Marker của MapLibre → cấm transition */
+#mascot-runner{transition:none !important;}
+
+/* Thanh chỉnh số ngày của chuyến đi */
+.day-config{
+  display:flex;align-items:center;justify-content:center;gap:10px;
+  padding:6px 12px 8px;
+}
+#day-count-label{
+  font:800 12px 'Baloo 2','Quicksand',sans-serif;color:var(--pink-600);
+  background:linear-gradient(100deg,var(--pink-100),var(--lilac-100));
+  padding:4px 12px;border-radius:20px;border:1.5px solid var(--pink-200);
+  min-width:104px;text-align:center;
+}
+.day-config .mini-btn{min-width:30px;font-weight:900;}
+.day-config .mini-btn:disabled{opacity:.35;cursor:not-allowed;}
+/* Nhiều ngày -> tab tự xuống dòng */
+.day-tabs{flex-wrap:wrap;}
+
+/* ===================== CHẾ ĐỘ QUAY MÀN HÌNH (Cinema) =====================
+   Ẩn 2 sidebar + topbar để bản đồ chiếm trọn khung hình. */
+body.cinema #sidebar-left,
+body.cinema #sidebar-right{display:none;}
+body.cinema #topbar{display:none;}
+/* Sidebar bị display:none => grid chỉ còn 1 item, phải khai báo 1 CỘT.
+   Nếu để '0 1fr 0' thì map rơi vào cột đầu rộng 0px và biến mất. */
+body.cinema #layout{
+  grid-template-columns:1fr;
+  height:100vh;padding:0;gap:0;
+}
+body.cinema #map-wrap{border-radius:0;border:none;}
+/* Ẩn riêng bảng điều khiển Play Route */
+body.hud-off #play-hud{display:none !important;}
+body.hud-off #route-hud{display:none !important;}
+body.hud-off #map-controls{display:none !important;}
+body.hud-off #mascot{display:none !important;}
+
+/* Nút nổi khôi phục HUD (vì nút gốc nằm trong HUD đã bị ẩn) */
+#hud-restore{
+  position:fixed;left:12px;bottom:12px;z-index:60;display:none;
+  padding:7px 13px;border-radius:20px;cursor:pointer;
+  font:800 12px 'Quicksand',sans-serif;
+  background:rgba(255,255,255,.85);color:var(--pink-600);
+  border:2px solid var(--pink-300);backdrop-filter:blur(6px);
+}
+body.hud-off #hud-restore{display:block;}
+#hud-restore:hover{background:var(--pink-400);color:#fff;}
+
+/* Nút nổi để thoát chế độ quay khi topbar đã ẩn */
+#cinema-exit{
+  position:fixed;top:12px;right:12px;z-index:60;display:none;
+  padding:7px 13px;border-radius:20px;cursor:pointer;
+  font:800 12px 'Quicksand',sans-serif;
+  background:rgba(255,255,255,.85);color:var(--pink-600);
+  border:2px solid var(--pink-300);backdrop-filter:blur(6px);
+}
+body.cinema #cinema-exit{display:block;}
+#cinema-exit:hover{background:var(--pink-400);color:#fff;}
+
+/* Ẩn địa điểm ngoài lịch trình khi đang chạy Play Route 3D.
+   Dùng display:none — KHÔNG đụng tới transform (MapLibre đang giữ nó). */
+.chibi-marker.off-route{display:none !important;}
+/* Bị bộ lọc sidebar loại bỏ -> ẩn hẳn khỏi bản đồ */
+.chibi-marker.filtered-out{display:none !important;}
+/* Ẩn khi xuất ảnh (chỉ giữ điểm trong lịch trình) */
+.chibi-marker.export-hidden{display:none !important;}
+
+/* Nhãn tên khi xuất ảnh: nền đục, viền rõ, dễ đọc khi in ra giấy */
+.chibi-label.export-label{
+  z-index:9;white-space:nowrap;pointer-events:none;
+  background:#fff;border:2px solid var(--pink-400);
+  color:#7a2e52;font-weight:800;font-size:11.5px;
+  padding:2px 7px;border-radius:9px;
+  box-shadow:0 1px 0 rgba(190,60,140,.25);
+  max-width:150px;overflow:hidden;text-overflow:ellipsis;
+}
+/* Khi export: bỏ hiệu ứng đổ bóng/mờ để ảnh in ra sạch nét */
+body.exporting .chibi-marker{filter:none !important;opacity:1 !important;}
+body.exporting .chibi-pin{box-shadow:none !important;}
+/* Trong 3D, pin thuộc lịch trình luôn rõ nét dù đang bị dimmed */
+body.hide-others-3d .chibi-marker:not(.off-route){opacity:1 !important;filter:none !important;}
+
+/* ------------------------------- Cảnh báo toạ độ ước lượng */
+.geo-warn{
+  margin:0 12px 10px;padding:8px 11px;border-radius:12px;
+  background:linear-gradient(100deg,#fff6e0,#fff0e6);
+  border:2px dashed #f0b45a;color:#8a5a12;
+  font-size:11px;font-weight:700;line-height:1.5;
+}
+.approx-dot{
+  position:absolute;right:-2px;bottom:-2px;
+  width:16px;height:16px;border-radius:50%;
+  background:#ffb020;color:#fff;border:2px solid #fff;
+  font-size:11px;font-weight:900;line-height:12px;text-align:center;
+  box-shadow:0 1px 4px rgba(0,0,0,.3);
+}
+.chibi-pin{position:relative;}

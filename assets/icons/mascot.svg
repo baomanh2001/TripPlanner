@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 170" width="160" height="170">
+  <defs>
+    <radialGradient id="bodyG" cx="45%" cy="35%">
+      <stop offset="0%" stop-color="#ffffff"/><stop offset="100%" stop-color="#ffe6f1"/>
+    </radialGradient>
+    <linearGradient id="beret" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#ff9ac6"/><stop offset="100%" stop-color="#e0559a"/>
+    </linearGradient>
+    <filter id="soft" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="3" stdDeviation="3" flood-color="#c9578f" flood-opacity=".35"/>
+    </filter>
+  </defs>
+  <g filter="url(#soft)">
+    <!-- ears -->
+    <g stroke="#8c3f68" stroke-width="3.5">
+      <ellipse cx="58" cy="34" rx="11" ry="28" fill="url(#bodyG)" transform="rotate(-11 58 34)"/>
+      <ellipse cx="102" cy="34" rx="11" ry="28" fill="url(#bodyG)" transform="rotate(11 102 34)"/>
+      <ellipse cx="58" cy="36" rx="5" ry="18" fill="#ffc2dd" stroke="none" transform="rotate(-11 58 36)"/>
+      <ellipse cx="102" cy="36" rx="5" ry="18" fill="#ffc2dd" stroke="none" transform="rotate(11 102 36)"/>
+    </g>
+    <!-- body -->
+    <ellipse cx="80" cy="122" rx="34" ry="30" fill="url(#bodyG)" stroke="#8c3f68" stroke-width="3.5"/>
+    <!-- backpack strap -->
+    <path d="M64 100 Q80 112 96 100" fill="none" stroke="#b3629a" stroke-width="4" stroke-linecap="round"/>
+    <!-- arm waving -->
+    <path d="M112 112 Q128 100 124 86" fill="none" stroke="#8c3f68" stroke-width="9" stroke-linecap="round"/>
+    <path d="M112 112 Q128 100 124 86" fill="none" stroke="#fff2f8" stroke-width="5" stroke-linecap="round"/>
+    <!-- head -->
+    <ellipse cx="80" cy="74" rx="42" ry="37" fill="url(#bodyG)" stroke="#8c3f68" stroke-width="3.5"/>
+    <!-- beret -->
+    <path d="M42 60 Q52 30 84 32 Q116 34 118 58 Q100 50 80 52 Q58 54 42 60 Z" fill="url(#beret)" stroke="#8c3f68" stroke-width="3.5" stroke-linejoin="round"/>
+    <circle cx="86" cy="30" r="5" fill="#ffd7ea" stroke="#8c3f68" stroke-width="3"/>
+    <!-- eyes -->
+    <g fill="#4a2038">
+      <ellipse cx="65" cy="76" rx="6.5" ry="8"/>
+      <ellipse cx="95" cy="76" rx="6.5" ry="8"/>
+    </g>
+    <circle cx="67.5" cy="73" r="2.6" fill="#fff"/>
+    <circle cx="97.5" cy="73" r="2.6" fill="#fff"/>
+    <!-- blush -->
+    <ellipse cx="53" cy="86" rx="7" ry="4.5" fill="#ff9fc4" opacity=".75"/>
+    <ellipse cx="107" cy="86" rx="7" ry="4.5" fill="#ff9fc4" opacity=".75"/>
+    <!-- mouth -->
+    <path d="M74 89 Q80 95 86 89" fill="none" stroke="#4a2038" stroke-width="3" stroke-linecap="round"/>
+    <!-- sparkles -->
+    <path d="M24 52 l3 7 7 3 -7 3 -3 7 -3 -7 -7 -3 7 -3 z" fill="#ffd166"/>
+    <path d="M138 96 l2.4 5.6 5.6 2.4 -5.6 2.4 -2.4 5.6 -2.4 -5.6 -5.6 -2.4 5.6 -2.4 z" fill="#ffd166"/>
+  </g>
+</svg>
